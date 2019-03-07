@@ -4,24 +4,25 @@
 ################################################################################
 # clear
 # DEFINING VARIABLES
-experiment=$1			# e.i. expName found in fastq fiel name, like in expName_R1.fastq.gz
-genome=$2			# e.i. Mus or human
-patfile=$3			# is the linker pattern file
-quality=$4			# mapping quality
-fastqDir=$5			# full path to directory containing the fastq file
-cutsite=$6			# leave empty, not in use
-numbproc=32
+# experiment=$1			# e.i. expName found in fastq fiel name, like in expName_R1.fastq.gz
+# genome=$2			# e.i. Mus or human
+# patfile=$3			# is the linker pattern file
+# quality=$4			# mapping quality
+# fastqDir=$5			# full path to directory containing the fastq file
+# cutsite=$6			# leave empty, not in use
+numbproc=8
 ################################################################################
 # PREPARE DIRECTORY STRUCTURE
-datadir=$HOME/Work/dataset/bliss && mkdir -p $datadir/$experiment
-bin=$HOME/Dropbox/pipelines/BLISS/bin
-python=$HOME/Dropbox/pipelines/BLISS/python
+datadir=$PWD/dataset/bliss && mkdir -p $datadir/$experiment
+export blissRoot=/juno/work/bic/socci/Work/Users/KentsisA/BLISS/Proj_09450/BLISS
+bin=$blissRoot/bin
+python=$blissRoot/python
 in=$datadir/$experiment/indata && mkdir -p $in
 out=$datadir/$experiment/outdata && mkdir -p $out
 outcontrol=$datadir/$experiment/outdata.control && mkdir -p $outcontrol
 aux=$datadir/$experiment/auxdata && mkdir -p $aux
 auxcontrol=$datadir/$experiment/auxdata.control && mkdir -p $auxcontrol
-refgen=$HOME/Work/genomes/$genome*.fa.gz
+refgen=$genome
 ################################################################################
 # LOAD DATA FILES
 
@@ -34,15 +35,15 @@ if [ $numb_of_files == 2 ]; then
     r2=`cat filelist_"$experiment" | tail -n1`
     echo "R2 is " $r2
 fi
-rm filelist_"$experiment"
+#rm filelist_"$experiment"
 ################################################################################
 if [ ! -f $in/r1oneline.fq ]; then
-    # "$bin"/module/quality_control.sh $numb_of_files $numbproc $out $r1 $r2 
+    # "$bin"/module/quality_control.sh $numb_of_files $numbproc $out $r1 $r2
     "$bin"/module/prepare_files.sh  $r1 $in $numb_of_files $r2
 fi
 "$bin"/module/pattern_filtering.sh $in $outcontrol $out $patfile $cutsite
 "$bin"/module/prepare_for_mapping.sh $numb_of_files $out $aux $outcontrol $auxcontrol $in $cutsite
-"$bin"/module/mapping.sh $numb_of_files $numbproc $refgen $aux $out $experiment 
+"$bin"/module/mapping.sh $numb_of_files $numbproc $refgen $aux $out $experiment
 "$bin"/module/mapping_quality.sh $numb_of_files $out $experiment $outcontrol $quality $cutsite
 "$bin"/module/umi_joining.sh $numb_of_files $out $experiment $aux $outcontrol $auxcontrol $quality $cutsite
 cat "$datadir"/"$experiment"/outdata/_q"$quality".bed | cut -f-5 |LC_ALL=C uniq -c | awk '{print $2,$3,$4,$5,$6,$1}' | tr " " "," > "$datadir"/"$experiment"/auxdata/aux
