@@ -4,12 +4,12 @@
 ################################################################################
 # clear
 # DEFINING VARIABLES
-# experiment=$1			# e.i. expName found in fastq fiel name, like in expName_R1.fastq.gz
-# genome=$2			# e.i. Mus or human
-# patfile=$3			# is the linker pattern file
-# quality=$4			# mapping quality
-# fastqDir=$5			# full path to directory containing the fastq file
-# cutsite=$6			# leave empty, not in use
+experiment=$1			# e.i. expName found in fastq fiel name, like in expName_R1.fastq.gz
+genome=$2			# e.i. Mus or human
+patfile=$3			# is the linker pattern file
+quality=$4			# mapping quality
+fastqDir=$5			# full path to directory containing the fastq file
+cutsite=$6			# leave empty, not in use
 numbproc=8
 ################################################################################
 # PREPARE DIRECTORY STRUCTURE
