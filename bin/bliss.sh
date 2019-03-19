@@ -15,6 +15,14 @@ numbproc=8
 # PREPARE DIRECTORY STRUCTURE
 datadir=$PWD/dataset/bliss && mkdir -p $datadir/$experiment
 export blissRoot=/juno/work/bic/socci/Work/Users/KentsisA/BLISS/Proj_09450/BLISS
+
+if [ -e /fscratch ]; then
+    mkdir -p /fscratch/socci
+    export SCRATCH_DIR=/fscratch/socci
+else
+    mkdir -p /scratch/socci
+    export SCRATCH_DIR=/scratch/socci
+
 bin=$blissRoot/bin
 python=$blissRoot/python
 in=$datadir/$experiment/indata && mkdir -p $in

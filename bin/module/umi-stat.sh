@@ -7,7 +7,7 @@ pos=$4
 
 # for pos in $(seq 8)
 # do
-cat ~/Work/dataset/rm"$exp"/indata/r1.fa | parallel --tmpdir $HOME/tmp --block 100M -k --pipe -L 2 "scan_for_matches $pattern - " |
+cat ~/Work/dataset/rm"$exp"/indata/r1.fa | parallel --tmpdir $SCRATCH_DIR --block 100M -k --pipe -L 2 "scan_for_matches $pattern - " |
 grep -v ">" | cut -d' ' -f1 | cut -c"$pos" | 
 LC_ALL=C sort | LC_ALL=C uniq -c | 
 awk '{print $2,$1}' | 
