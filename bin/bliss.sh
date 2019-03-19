@@ -22,6 +22,7 @@ if [ -e /fscratch ]; then
 else
     mkdir -p /scratch/socci
     export SCRATCH_DIR=/scratch/socci
+fi
 
 bin=$blissRoot/bin
 python=$blissRoot/python
