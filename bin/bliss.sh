@@ -55,10 +55,7 @@ cp "$datadir"/"$experiment"/auxdata/aux "$datadir"/"$experiment"/outdata/pre_umi
 "$bin"/module/umi_filter_3.sh "$datadir"/"$experiment"/outdata/q"$quality"_chr-loc-strand-umi-pcr  "$datadir"/"$experiment"/outdata/q"$quality"_chr-loc-countDifferentUMI.bed
 
 echo "Alignment statistics:" >> "$datadir"/"$experiment"/outdata/summary.txt
-#samtools flagstat "$datadir"/"$experiment"/outdata/*.sam >> "$datadir"/"$experiment"/outdata/summary.txt
-samtools view -Sb "$datadir"/"$experiment"/outdata/*.sam > _tmp_$$_.bam
-samtools flagstat _tmp_$$_.bam >> "$datadir"/"$experiment"/outdata/summary.txt
-rm _tmp_$$_.bam
+samtools flagstat "$datadir"/"$experiment"/outdata/*.sam >> "$datadir"/"$experiment"/outdata/summary.txt
 echo "Number of left and right cuts:" >> "$datadir"/"$experiment"/outdata/summary.txt
 cat "$datadir"/"$experiment"/outdata/q"$quality"_chr-loc-strand-umi-pcr | grep -v "_" | cut -f4 | sort | uniq -c >> "$datadir"/"$experiment"/outdata/summary.txt
 echo "Number of DSB locations:" >> "$datadir"/"$experiment"/outdata/summary.txt
